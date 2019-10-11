@@ -1,0 +1,288 @@
+{% extends 'pages/base.html' %}
+{% load staticfiles %}
+
+{% block body_block%}
+    <div class="container-fluid">
+
+      <div class="row">
+    <div class="col-md-2" style="background-color: #eceeef; width:640px;" >
+
+      <div class="container" style="margin-top:50px;">
+        <h4> Sudoku {{level}}#{{id}}</h4>
+        <div class="container" style="margin-top:120px">
+          <button id="hard" class= "btn " style="background-color: #a83c32; color:white;width:100px; " type="button" name="button">Hard</button>
+          <p></p>
+          <button id="normal" class= "btn btn-warning" style="width:100px;" type="button" name="button">Normal</button>
+          <p></p>
+          <button id="easy" class= "btn btn-primary" style=" color:white;width:100px;" type="button" name="button">Easy</button>
+
+        </div>
+
+
+          </div>
+      </div>
+
+
+    <div class="container col-md-6" style="margin-left:0px;  background-color:#eceeef;" >
+      <div class="container" align = "center" >
+
+        <div class="jumbotron col-md-16"  >
+          {% if sudoku_board %}
+            <table>
+              {% for element in sudoku_board%}
+              <tr>
+                {% for item in element%}
+                  <td>
+                    {% if item == 0 %}
+                    <input type="number"
+                      min="1" max="9"
+
+                      class="sudoku-blank"
+                       name="" value="">
+                    {% else %}
+                    <input type = "number" disabled
+                    class = "sudoku-full"
+                    name="" value="{{item}}">
+                    {% endif %}
+                  </td>
+
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+
+
+      </div container col-md-6>
+
+
+
+    </div row>
+    <div class="container col-md-4" style="margin-left:0px;  background-color:#eceeef;">
+          <div class="container" style="margin-top:100px;">
+            {% if nums %}
+            <table>
+              <tr>
+                  {% for key,val in nums %}
+                    <td><button style="width:35px; background-color:lightgreen; border:1px solid black; border-radius:5px;" type="button" name="button"><h4>{{key}}</h4>{{val}}</button> </td>
+                  {% endfor %}
+              </tr>
+
+
+            </table>
+            <div class="container" >
+
+              <ul style="margin-top:50px;">
+                <input type="checkbox" name="cb" value="Error" class="cb1">
+                <label for="cb"> Notify wrong input</label>
+              </ul>
+
+              <div class="container" style="margin-top:250px;">
+                <button class="btn btn-success" type="button" id="new">New Game</button>
+
+                <button class="btn btn-warning" type="button" id="reset">Reset</button>
+
+                <button class="btn btn-danger" type="button" id="cancel">Cancel </button>
+              </div>
+
+
+            </div>
+            {% endif %}
+          </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+  <script >
+
+  var main_board = {{main_board}}
+  var s_board = {{sudoku_board}}
+
+
+
+$('.cb1').click(function(e)
+{
+  //var blank_color = lightgray;
+  if($('.cb1').prop('checked'))
+  {
+
+    for (r=0;r<main_board.length;r++)
+    {
+      for(c=0;c<main_board.length;c++)
+      {
+
+            if($('input').eq(r*9+c).val()!="")
+            {
+                          if(main_board[r][c]!=$('input').eq(r*9+c).val())
+                          {
+                              $('input').eq(r*9+c).css('color','red');
+                          }
+                          else
+                          {
+                            $('input').eq(r*9+c).css('color','blue');
+                          }
+            } //if('input')
+
+      }// endfor for(c=0;c<main_board.length;c++)
+    }//for (r=0;r<main_board.length;r++)
+  }//if($('.cb1').prop('checked'))
+    else
+    {
+      for (r=0;r<main_board.length;r++)
+      {
+        for(c=0;c<main_board.length;c++)
+        {
+
+              if($('input').eq(r*9+c).val()!="")
+              {
+                $('input').eq(r*9+c).css('color','black');
+
+              }
+              else
+              {
+                $('input').eq(r*9+c).css('color','transparent');
+              }
+
+        }//for(c=0;c<main_board.length;c++)
+
+    }//for (r=0;r<main_board.length;r++)
+
+  }//else
+
+})
+
+$('input').keyup(function(e)
+{
+    c=($(e.target).closest('td').index());
+    r=($(e.target).closest('tr').index());
+    v = this.value;
+    console.log(v);
+if($('.cb1').prop('checked'))
+      {
+
+              if (main_board[r][c] != v)
+              {
+                $(e.target).css('color','red');
+                console.log("val of v is : "+v);
+              } //endif
+              else
+              {
+                $(e.target).css('color','green');
+                console.log("value of v="+v);
+              }//endelse
+
+      }
+
+})//event key up
+
+$('#reset').click(function()
+{
+
+  var result = confirm(" Are you sure to reset the game? ")
+
+  if(result==true)
+  {
+            for (r=0;r<main_board.length;r++)
+            {
+              for(c=0;c<main_board.length;c++)
+              {
+                if(s_board[r][c]!=0)
+                {
+                  $('input').eq(r*9+c).val(s_board[r][c]);
+                  // console.log(s_board[r][c]);
+                }
+
+                else
+                {
+                  $('input').eq(r*9+c).val("");
+                }
+              }
+            }
+
+  }
+
+
+})
+
+
+$('#new').click(function()
+{
+  var result = confirm(" Are you sure to restart the game? ")
+
+      if(result == true)
+      {
+        window.location.href = "{% url 'sudoku:playsudoku' level=lev %}"
+      }
+      else {
+        console.log("sorry");
+      }
+
+})
+
+$('#cancel').click(function()
+{
+  var result = confirm(" Are you sure to restart the game? ")
+
+      if(result == true)
+      {
+        window.location.href = "{% url 'index' %}"
+      }
+      else {
+        console.log("sorry");
+      }
+
+})
+
+$('#hard').click(function()
+{
+  var result = confirm(" Are you sure to restart a harder  game? ")
+
+      if(result == true)
+      {
+        window.location.href = "{% url 'sudoku:playsudoku' level='2' %}"
+      }
+      else {
+        console.log("sorry");
+      }
+
+})
+$('#normal').click(function()
+{
+  var result = confirm(" Are you sure to restart the game? ")
+
+      if(result == true)
+      {
+        window.location.href = "{% url 'sudoku:playsudoku' level='1' %}"
+      }
+      else {
+        console.log("sorry");
+      }
+
+})
+$('#easy').click(function()
+{
+  var result = confirm(" Are you sure to restart  an easier  game? ")
+
+      if(result == true)
+      {
+        window.location.href = "{% url 'sudoku:playsudoku' level='0' %}"
+      }
+      else {
+        console.log("sorry");
+      }
+
+})
+  </script>
+
+{% endblock %}

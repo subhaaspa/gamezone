@@ -1,0 +1,22 @@
+{% extends "pages/base.html" %}
+{%load bootstrap4 %}
+
+
+{% block body_block %}
+<div class="jumbotron">
+  <div class="container" style="background-color:orange; width:500px;height:300px; border-radius:20px;">
+    <h2 style="color:purple; margin-top:10px;">Login</h2>
+      <form class="" action="{% url 'accounts:home' %}" method="POST" style="margin-top:40px; margin-top:20px;">
+        {% csrf_token %}
+        {%bootstrap_form form%}
+      <input class="btn btn-info" type="submit" name="" value="Login">
+      <input class="btn btn-danger" type="text" name="" value="Cancel">
+      </form>
+  </div>
+</div>
+
+
+
+
+
+{% endblock %}
