@@ -18,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,"template")
 SUDOKU_TEMPLATE_DIR = os.path.join(BASE_DIR,"sudoku/template")
 ACCOUNTS_TEMPLATE_DIR = os.path.join(BASE_DIR,"accounts/template")
+MASTERMIND_TEMPLATE_DIR = os.path.join(BASE_DIR,"mastermind/template")
 STATIC_DIR = os.path.join(BASE_DIR,"static")
 
 
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'sudoku',
     'accounts',
+    'mastermind'
 ]
 
 MIDDLEWARE = [
@@ -63,7 +65,7 @@ ROOT_URLCONF = 'game_zone.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR,SUDOKU_TEMPLATE_DIR,ACCOUNTS_TEMPLATE_DIR,],
+        'DIRS': [TEMPLATE_DIR,SUDOKU_TEMPLATE_DIR,ACCOUNTS_TEMPLATE_DIR,MASTERMIND_TEMPLATE_DIR,],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,5 +129,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_REDIRECT_URL = "/home/"
+LOGOUT_REDIRECT_URL ="/home/"
 
 print(TEMPLATE_DIR)

@@ -18,6 +18,7 @@ from django.urls import path,include
 from sudoku import views as s_views
 from accounts import views as ac_views
 from game_zone import views
+from django.contrib.auth import views as login_views
 
 
 
@@ -25,6 +26,8 @@ urlpatterns = [
     path('',views.index, name = "index"),
     path('sudoku/',include("sudoku.urls", namespace="sudoku"),name="playsudoku"),
     path('accounts/', include("accounts.urls"),name="signup"),
-
+    path('mastermind/',include("mastermind.urls"), name="mastermind"),
+    path('home/',ac_views.user_home_page,name="home"),
+    path('logout/',login_views.LogoutView.as_view(), name="logout"),
     path('admin/', admin.site.urls),
 ]

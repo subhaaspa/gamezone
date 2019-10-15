@@ -14,8 +14,8 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:orange;" >
-        <a style = "font-family: 'Mansalva', cursive;" class="navbar-brand" href="#">Game Zone</a>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#144963; color:white; " >
+        <a style = "font-family: 'Mansalva', cursive; " class="navbar-brand" href="{% url 'index' %}">Game Zone</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -43,12 +43,15 @@
 
             </li>
           </ul>
-          <a class="nav-link" href="{% url 'accounts:login' %}" tabindex="-1" > <button class="btn btn-outline-dark   btn-sm" type="button" name="button">Login</button> </a>
+          {% if  request.user.is_authenticated %}
+          <p>Welcome : {{request.user.username}}@gamezone.com</p>
+          <a class = "nav-link"   href="{% url 'logout'%}"><button type="button" class="btn btn-warning btn-sm">Log Out</button> </a>
+          {% else %}
+          <a class="nav-link" href="{% url 'accounts:login' %}" tabindex="-1" > <button class="btn btn-outline-light   btn-sm" type="button" name="button">Login</button> </a>
           <a class="nav-link" href="{% url 'accounts:signup'%}" tabindex="-1" > <button class="btn btn-info btn-sm my-2 my-sm-0" type="submit">Sign Up</button></a>
 
+          {% endif %}
 
-
-          </form>
         </div>
       </nav>
     <div class="">

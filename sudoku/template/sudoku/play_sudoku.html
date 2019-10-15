@@ -2,13 +2,16 @@
 {% load staticfiles %}
 
 {% block body_block%}
+
     <div class="container-fluid">
 
       <div class="row">
-    <div class="col-md-2" style="background-color: #eceeef; width:640px;" >
 
+    <div class="col-md-2" style="background-color: #eceeef; width:640px;" >
+        {# <h5>Configurations! You have successfully completed</h5> #}
       <div class="container" style="margin-top:50px;">
         <h4> Sudoku {{level}}#{{id}}</h4>
+
         <div class="container" style="margin-top:120px">
           <button id="hard" class= "btn " style="background-color: #a83c32; color:white;width:100px; " type="button" name="button">Hard</button>
           <p></p>
@@ -16,9 +19,13 @@
           <p></p>
           <button id="easy" class= "btn btn-primary" style=" color:white;width:100px;" type="button" name="button">Easy</button>
 
+
         </div>
 
-
+        <ul style="margin-left:-50px;margin-top:50px;">
+          <input type="checkbox" name="cb" value="Error" class="cb1">
+          <label for="cb">   Notify wrong input</label>
+        </ul>
           </div>
       </div>
 
@@ -28,19 +35,19 @@
 
         <div class="jumbotron col-md-16"  >
           {% if sudoku_board %}
-            <table>
+            <table id="sudoku">
               {% for element in sudoku_board%}
               <tr>
                 {% for item in element%}
                   <td>
                     {% if item == 0 %}
-                    <input type="number"
+                    <input id="sdk" type="number"
                       min="1" max="9"
 
                       class="sudoku-blank"
                        name="" value="">
                     {% else %}
-                    <input type = "number" disabled
+                    <input id="sdk" type = "number" disabled
                     class = "sudoku-full"
                     name="" value="{{item}}">
                     {% endif %}
@@ -71,20 +78,35 @@
 
 
             </table>
-            <div class="container" >
+              <h5 id="congo">Congratulations! You have successfully completed</h5>
+              <div class="jumbotron" style=" margin-left:-20px;">
+                <table>
+                  <tr>
+                    <td><h6>Statistics:</h6></td>
+                    <td><p></p></td>
 
-              <ul style="margin-top:50px;">
-                <input type="checkbox" name="cb" value="Error" class="cb1">
-                <label for="cb"> Notify wrong input</label>
-              </ul>
 
-              <div class="container" style="margin-top:250px;">
-                <button class="btn btn-success" type="button" id="new">New Game</button>
+                  </tr>
+                  <tr>
 
-                <button class="btn btn-warning" type="button" id="reset">Reset</button>
+                    <td><h6 id="timer"></h6></td>
+                  </tr>
+                </table>
+                <div class="container" >
+                  <div class="container">
+                    {# <script src="https://www.powr.io/powr.js?platform=html"></script><div class="powr-countdown-timer" id="55e68507_1570983583"></div> #}
 
-                <button class="btn btn-danger" type="button" id="cancel">Cancel </button>
+                  <div class="container" style="margin-top:200px; margin-left:0px;min-width:400px;">
+                    <button class="btn btn-success" type="button" id="new">New Game</button>
+
+                    <button class="btn btn-warning" type="button" id="reset">Reset</button>
+
+                    <button class="btn btn-danger" type="button" id="cancel">Cancel </button>
+                  </div>
               </div>
+
+
+
 
 
             </div>
@@ -95,21 +117,20 @@
 </div>
 
 
-
-
-
-
   <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
 
-  <script >
+<script type="text/javascript">
 
   var main_board = {{main_board}}
   var s_board = {{sudoku_board}}
-
-
+  var table=$('table#sudoku tr');
+  var board_element=$('input#sdk');
+  var wrong = 0;
+  var timer=$('h6#timer');
+  $('h5').hide();
 
 $('.cb1').click(function(e)
 {
@@ -122,15 +143,19 @@ $('.cb1').click(function(e)
       for(c=0;c<main_board.length;c++)
       {
 
-            if($('input').eq(r*9+c).val()!="")
+            if(board_element.eq(r*9+c).val()!="")
             {
-                          if(main_board[r][c]!=$('input').eq(r*9+c).val())
+                          if(main_board[r][c]!=board_element.eq(r*9+c).val())
                           {
-                              $('input').eq(r*9+c).css('color','red');
+                              board_element.eq(r*9+c).css('color','red');
+                              console.log("mb:"+main_board[r][c]);
+                              console.log(r,c);
+                              console.log("but:"+$('input').eq(r*9+c).val());
+
                           }
                           else
                           {
-                            $('input').eq(r*9+c).css('color','blue');
+                            board_element.eq(r*9+c).css('color','blue');
                           }
             } //if('input')
 
@@ -144,14 +169,14 @@ $('.cb1').click(function(e)
         for(c=0;c<main_board.length;c++)
         {
 
-              if($('input').eq(r*9+c).val()!="")
+              if(board_element.eq(r*9+c).val()!="")
               {
-                $('input').eq(r*9+c).css('color','black');
+                board_element.eq(r*9+c).css('color','black');
 
               }
               else
               {
-                $('input').eq(r*9+c).css('color','transparent');
+              board_element.eq(r*9+c).css('color','transparent');
               }
 
         }//for(c=0;c<main_board.length;c++)
@@ -164,27 +189,67 @@ $('.cb1').click(function(e)
 
 $('input').keyup(function(e)
 {
+  if (gameStillOn())
+  {
     c=($(e.target).closest('td').index());
     r=($(e.target).closest('tr').index());
     v = this.value;
-    console.log(v);
-if($('.cb1').prop('checked'))
+
+    if($('.cb1').prop('checked'))
       {
 
               if (main_board[r][c] != v)
               {
                 $(e.target).css('color','red');
-                console.log("val of v is : "+v);
+                wrong++;
               } //endif
               else
               {
                 $(e.target).css('color','green');
-                console.log("value of v="+v);
+
               }//endelse
 
       }
 
+
+  }
+  else
+  {
+    $('td').css('background-color','green')
+    $('h5').show();
+    $('.cb1').hide();
+
+  }
+
+
+
 })//event key up
+
+function gameStillOn()
+{
+  for(var r = 0; r<main_board.length; r++)
+  {
+    for(var c = 0; c<main_board.length; c++)
+    {
+      t=r*9+c;
+      cell = board_element.eq(r*9+c).val();
+      // console.log("cell:" + r + ","+c+","+t+","+cell);
+
+      if (board_element.eq(r*9+c).val() == "")
+      {
+        return true;
+      }
+      else if (board_element.eq(r*9+c).val()!=main_board[r][c])
+      {
+        return true;
+      }
+
+    }
+  }
+  return false;
+}
+
+
 
 $('#reset').click(function()
 {
@@ -199,13 +264,13 @@ $('#reset').click(function()
               {
                 if(s_board[r][c]!=0)
                 {
-                  $('input').eq(r*9+c).val(s_board[r][c]);
-                  // console.log(s_board[r][c]);
+                  board_element.eq(r*9+c).val(s_board[r][c]);
+
                 }
 
                 else
                 {
-                  $('input').eq(r*9+c).val("");
+                  board_element.eq(r*9+c).val("");
                 }
               }
             }
@@ -224,9 +289,9 @@ $('#new').click(function()
       {
         window.location.href = "{% url 'sudoku:playsudoku' level=lev %}"
       }
-      else {
-        console.log("sorry");
-      }
+      // else {
+      //   console.log("sorry");
+      // }
 
 })
 
@@ -238,9 +303,9 @@ $('#cancel').click(function()
       {
         window.location.href = "{% url 'index' %}"
       }
-      else {
-        console.log("sorry");
-      }
+      // else {
+      //   console.log("sorry");
+      // }
 
 })
 
@@ -252,9 +317,9 @@ $('#hard').click(function()
       {
         window.location.href = "{% url 'sudoku:playsudoku' level='2' %}"
       }
-      else {
-        console.log("sorry");
-      }
+      // else {
+      //   console.log("sorry");
+      // }
 
 })
 $('#normal').click(function()
@@ -265,9 +330,9 @@ $('#normal').click(function()
       {
         window.location.href = "{% url 'sudoku:playsudoku' level='1' %}"
       }
-      else {
-        console.log("sorry");
-      }
+      // else {
+      //   console.log("sorry");
+      // }
 
 })
 $('#easy').click(function()
@@ -278,11 +343,12 @@ $('#easy').click(function()
       {
         window.location.href = "{% url 'sudoku:playsudoku' level='0' %}"
       }
-      else {
-        console.log("sorry");
-      }
+      // else {
+      //   console.log("sorry");
+      // }
 
 })
-  </script>
+
+</script>
 
 {% endblock %}

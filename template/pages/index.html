@@ -1,31 +1,35 @@
 {% extends 'pages/base.html'%}
 {% load staticfiles %}
+
+
+
 {% block body_block%}
-
-
-
-  <div class="container" style="background-color:white; margin-left:0px; margin-top:0px; margin-right:0px;">
-    <div class="container" style="margin-left:150px; margin-top:50px;">
-      {% if request.user.is_authenticated %}
-      <h2>Welcome home {{user}}</h2>
-      <div class="card mb-3" style="max-width: 540px; border-radius:20px;background-color:#eb776e">
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <img style="margin-left:5px; margin-top:5px; width:150px; height:150px; border-radius:100px;border:1px solid red" src="{% static 'images/sudoku.png' %}" class="card-img" alt="">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body" style = "">
-              <a href="{% url 'sudoku:playsudoku' level='1' %}"> <h5 class="card-title">Sudoku</h5></a>
-              <p class="card-text">Test your number guessing skill</p>
-              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-            </div>
-          </div>
-        </div>
-  </div>
-  {% endif %}
+<div class="jumbotron" align="center">
+  <div class="card" style="max-width:700px;" align="left">
+    <h5 class="card-header" style="background-color:#144963; color:white;max-width:700px;align:center">Sudoku</h5>
+    <div class="card-body" style="background-color:white; max-width:700px;">
+      <h5 class="card-title">Sudoku : Increased your concentration and cognitive skills</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="{% url 'sudoku:playsudoku' level='1' %}" class="btn btn-primary">Play Sudoku Here</a>
     </div>
-
-
   </div>
+</div>
+<div class="jumbotron" align="center">
+  <div class="card" style="max-width:700px;" align="left">
+    <h5 class="card-header" style="background-color:#144963; color:white;max-width:700px;align:center">Master Mind</h5>
+    <div class="card-body">
+      <h5 class="card-title">Master Mind : A game for potential spies</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="{% url 'mastermind:playmastermind' %}" class="btn btn-primary">Play Master Mind Here</a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
 
 {% endblock %}

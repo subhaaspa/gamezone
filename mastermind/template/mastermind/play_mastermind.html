@@ -1,0 +1,343 @@
+{% extends "pages/base.html" %}
+
+{% block body_block%}
+
+<nav class="nav navbar navbar-dark">
+        <h3> Mind Game</h3>
+        <h4 id="congrats">""</h4>
+        <h6 id="points"></h6>
+</nav>
+
+<div class="jumbotron" style="margin-top:0px; margin-left:100px;background-color:white; max-height:370px;max-width:900px;" >
+  <div class="row">
+    <div class="jumbotron " style="Height:300px; width:750px;background-color:#d0b9ed; margin-top:-40px;"vertical-align="center">
+      <table id="code-table" style="margin-top:-50px; ">
+        <script type="text/javascript">
+
+        for(var i=0 ; i<=12 ; i++)
+        {
+          document.write('<th class="text-center">'+""+i+'</th>')
+        }
+        for (var j = 0; j <=3; j++) {
+
+        document.write("<tr>")
+
+           for(i=0;i<=12;i++)
+           {
+
+             document.write("<td style='min-width:54px;'><button id='coder' class='btn' style='width:50px; height:50px;background-color:white; border:1px solid black; border-radius:5px;'>"+""+"</button></td>")
+           }
+           document.write("</tr>")
+         }
+
+
+
+
+        </script>
+
+
+      </table>
+      <table id="hints_table">
+        <script type="text/javascript">
+        for (var j = 0; j <=1; j++) {
+
+        document.write("<tr>")
+
+           for(i=0;i<=24;i++)
+           {
+             document.write("<td style='min-width:2px; min-height:2px;' ><button id='hint' type='text' class='btn' style='width:2px; height:2px;background-color:white; border:1px solid black; border-radius:20px;'></button></td>")
+
+           }
+           document.write("</tr>")
+         }
+
+        </script>
+      </table>
+
+
+    </div>
+
+       <div class=" " style="background-color:gray; max-height:300px;width:50px; margin-left:-10px;margin-top:-40px;">
+           <table  id = "secret" style="margin-top:40px;">
+              <tr>
+                <td style="height:50px;"><button id='secret' class='btn' style='width:40px; height:40px;background-color:white; border:1px solid black; border-radius:50px;'></button></td>
+              </tr>
+              <tr>
+                <td style="height:50px;"><button id='secret' class='btn' style='width:40px; height:40px;background-color:white; border:1px solid black; border-radius:50px;'></button></td>
+              </tr>
+              <tr>
+                <td style="height:50px;"><button id='secret' class='btn' style='width:40px; height:40px;background-color:white; border:1px solid black; border-radius:50px;'></button></td>
+              </tr>
+              <tr>
+                <td style="height:50px;"><button id='secret' class='btn' style='width:40px; height:40px;background-color:white; border:1px solid black; border-radius:50px;'></button></td>
+              </tr>
+           </table>
+      </div>
+
+  </div>
+<div class="row">
+  <div class="col-sm-2" >
+    <button id="set" type="button" class="btn btn-info"  style="margin-top:-15px; ">Set</button>
+  </div>
+  <div class="col-sm-8" >
+    <p style="margin-top:-15px;"> [How to read the hint:For column 0  1st and 2nd of the first row and for the 3rd and 4th coder; 1st and 2nd of the second row ]</p>
+    <p> </p>
+  </div>
+
+</div>
+
+</div>
+  <div class="row">
+    <div class="container col-md-6" style="background-color:white; max-width:400px;margin-left:100px;">
+      <table id="color-picker">
+        <td ><button id="color-selector" class='btn' style='width:40px; height:40px;background-color:red; border:1px solid black; border-radius:50px;'></button></td>
+       <td ><button id="color-selector" class='btn' style='width:40px; height:40px;background-color:blue; border:1px solid black; border-radius:50px;'></button></td>
+       <td ><button id="color-selector" class='btn' style='width:40px; height:40px;background-color:green; border:1px solid black; border-radius:50px;'></button></td>
+       <td ><button id="color-selector" class='btn' style='width:40px; height:40px;background-color:black; border:1px solid black; border-radius:50px;'></button></td>
+        <td ><button id="color-selector" class='btn' style='width:40px; height:40px;background-color:purple; border:1px solid black; border-radius:50px;'></button></td>
+        <td ><button id="color-selector" class='btn' style='width:40px; height:40px;background-color:orange; border:1px solid black; border-radius:50px;'></button></td>
+        <td ><button id="color-selector" class='btn' style='width:40px; height:40px;background-color:#0d759e; border:1px solid black; border-radius:50px;'></button></td>
+       <td ><button id="color-selector" class='btn' style='width:40px; height:40px;background-color:yellow; border:1px solid black; border-radius:50px;'></button></td>
+
+       <td align="right"></td>
+      </table>
+
+
+    </div>
+
+      <div class="col-md-6" style="">
+        <button id="start" type="button" class="btn btn-success">Start Playing</button>
+        <button id="surrender" type="button" class="btn btn-info" style="background-color:#690d9e">Surrender</button>
+        <button id="cancel" type="button" class="btn btn-danger">Cancel</button>
+      </div>
+
+
+  </div>
+
+
+
+      <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"></script>
+
+      <script type="text/javascript">
+      $('h4').hide();
+      var pos_arr = [0,0,0,0];
+      var col_arr = [0,0,0,0]
+      var colors = ['','red','blue','green','black','purple','orange','#0d759e','yellow']
+      var selected_col=0
+      var white = "rgb(255,255,255)";
+      var table_color_selector = $('button#color-selector');
+      var buttons_coder = $('button#coder');
+      var table_coder = $('table#code-table tr');
+      var secret = $('button#secret');
+      var hint= $('table#hints_table tr');
+
+  table_color_selector.click(function(e){
+    color = $(e.target).css('background-color');
+    // console.log(e.target);
+
+  })
+
+
+  buttons_coder.click(function(e){
+    $(e.target).css('background-color',color);
+
+    if(checkIfFill(selected_col))
+    {
+        $('button#set').prop('disabled',false);
+    }
+    else
+    {
+        $('button#set').prop('disabled',true);
+
+    }
+
+  })
+
+  $('#start').click(function(e){
+    setUpGame(selected_col);
+
+
+  })
+
+$('button#set').click(function(e){
+
+console.log(checkForMatch(selected_col));
+  if(checkForMatch(selected_col))
+  {
+    secret.show();
+
+    $('h4#congrats').show();
+    steps = selected_col + 1;
+    points = (12-steps) * 10;
+    document.getElementById("congrats").innerHTML = "Configurations You have found the secret code in : " + steps +" steps";
+    document.getElementById("points").innerHTML = "points earned : "+points
+  }
+  else {
+    colorCheck(selected_col);
+    updateHints(selected_col);
+    selected_col++;
+    setUpGame(selected_col,false);
+    col_arr=[0,0,0,0];
+    pos_arr =[0,0,0,0];
+    console.log(col_arr);
+    console.log(pos_arr);
+  }
+
+
+})
+
+function checkForMatch(col)
+{
+  console.log("col:"+col);
+  for (var i=1;i<5;i++)
+  {
+    var report = returnColor(i,col)
+
+    if (report !== secret.eq(i-1).css('background-color'))
+    {
+
+      return false
+    }
+  }
+  return true;
+
+}
+
+function colorCheck(col)
+{
+  for (var i = 1 ; i<5 ; i++)
+  {
+    var report = returnColor(i,col);
+    for (var j=0;j<4;j++)
+    {
+      console.log(i,j);
+      console.log("coder:"+report +"secret:"+secret.eq(j).css('background-color'));
+
+      if (report === secret.eq(j).css('background-color'))
+      {
+        if(i==j+1)
+        {
+          pos_arr[j]=1;
+        }
+        else {
+          col_arr[i-1] = 1;
+        }
+      }
+
+    }
+
+
+
+    }
+
+}
+
+
+function updateHints(col)
+{
+  colind = col*2;
+  var i=0;
+  for (var r=0; r<=1; r++)
+  {
+    for (var c=colind ;c<=colind+1; c++)
+    {
+      console.log("inside updatehints");
+      console.log(i,r,c);
+      if(col_arr[i]===1)
+      {
+
+        hint.eq(r).find('td').eq(c).find('button').css('background-color','yellow');
+      }
+      if(pos_arr[i]===1)
+      {
+        hint.eq(r).find('td').eq(c).find('button').css('background-color','red');
+      }
+        i++;
+    }
+  }
+
+
+}
+
+function returnColor(rowIndex,colIndex) {
+  var color = table_coder.eq(rowIndex).find('td').eq(colIndex).find('button').css('background-color');
+
+  return color;
+}
+
+function checkIfFill(colIndex)
+{
+
+  for (var row = 1; row <= 3; row++)
+  {
+    colorReport = returnColor(row,colIndex);
+
+    if (colorReport === 'rgb(255, 255, 255)')
+    {
+      return false;
+
+    }
+
+  }
+
+  return true;
+}
+
+
+  function setUpGame(col,reset=true)
+  {
+    $('button#coder').prop('disabled', true);
+
+    for(var r=0;r<4;r++){
+      t = r*13+col
+       $('button#coder').eq(t).prop('disabled',false);
+       $('button#set').prop('disabled',true);
+    }
+    secret.hide();
+      if(reset)
+      {
+          for (var i = 0; i<4; i++)
+          {
+            rand = Math.floor(Math.random()*8+1);
+            console.log(rand);
+            secret.eq(i).css('background-color',colors[rand]);
+          }
+          // secret.hide();
+      }
+  }
+
+
+
+  $('button#surrender').click(function()
+  {
+    var result = confirm(" Are you sure to surrender?")
+    if(result)
+    {
+      secret.show();
+      document.getElementById("congrats").innerHTML = " SORRY YOU haveE SURRENDERED: ";
+      $('#congrats').show();
+      document.getElementById("points").innerHTML = "points earned : 0";
+      console.log("sorry");
+    }
+  })
+
+  $('button#cancel').click(function()
+  {
+    var result = confirm(" Are you sure to surrender?")
+    if(result)
+    {
+        window.location.href = "{% url 'index' %}"
+    }
+  })
+
+</script>
+
+
+  </div>
+
+
+
+{% endblock %}
