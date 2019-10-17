@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from . import models
 # Create your views here.
 from django.urls import reverse_lazy
 from accounts import forms
@@ -25,3 +25,9 @@ class UserLogin(LoginView):
     template_name = "accounts/login.html"
     context_object_name = "users"
     success_url = reverse_lazy("accounts:home")
+
+
+class SaveGameProgress(CreateView):
+    model = models.GameProgress
+
+    # def post(self):

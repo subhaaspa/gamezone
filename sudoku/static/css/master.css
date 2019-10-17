@@ -8,7 +8,7 @@
 
   width: 55px;
   height: 55px;
-  text-align: right;
+  text-align: center;
   border: 2px solid green;
   color:lightgray;
   border-radius:5px;
@@ -16,7 +16,7 @@
 
 
   color: transparent;
-    
+
   text-shadow: 0 0 0 #2196f3;
 
   &:focus {
@@ -29,7 +29,7 @@
 
   width: 55px;
   height: 55px;
-  text-align: right;
+  text-align: center;
 
   font-size: 30px;
   border: 2px solid #c7b0d6;

@@ -68,4 +68,7 @@ class SudokuView(View):
         return render(request,self.template_name ,context=context_dict)
         # from django.shortcuts import render
 
+
 # Create your views here.
+
+    # def post(self,request )

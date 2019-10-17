@@ -41,13 +41,13 @@
                 {% for item in element%}
                   <td>
                     {% if item == 0 %}
-                    <input id="sdk" type="number"
-                      min="1" max="9"
+                    <input id="sdk" type="text" onKeyDown="validateEntry()" value=""
+                      maxlength="1"
 
                       class="sudoku-blank"
                        name="" value="">
                     {% else %}
-                    <input id="sdk" type = "number" disabled
+                    <input id="sdk" type = "text" disabled
                     class = "sudoku-full"
                     name="" value="{{item}}">
                     {% endif %}
@@ -189,37 +189,42 @@ $('.cb1').click(function(e)
 
 $('input').keyup(function(e)
 {
-  if (gameStillOn())
-  {
-    c=($(e.target).closest('td').index());
-    r=($(e.target).closest('tr').index());
-    v = this.value;
-
-    if($('.cb1').prop('checked'))
-      {
-
-              if (main_board[r][c] != v)
-              {
-                $(e.target).css('color','red');
-                wrong++;
-              } //endif
-              else
-              {
-                $(e.target).css('color','green');
-
-              }//endelse
-
-      }
 
 
-  }
-  else
-  {
-    $('td').css('background-color','green')
-    $('h5').show();
-    $('.cb1').hide();
+     if (gameStillOn())
+     {
+       c=($(e.target).closest('td').index());
+       r=($(e.target).closest('tr').index());
+       v = this.value;
 
-  }
+       if($('.cb1').prop('checked'))
+         {
+
+                 if (main_board[r][c] != v)
+                 {
+                   $(e.target).css('color','red');
+                   wrong++;
+                 } //endif
+                 else
+                 {
+                   $(e.target).css('color','green');
+
+                 }//endelse
+
+         }
+
+
+     }
+     else
+     {
+       $('td').css('background-color','green')
+       $('h5').show();
+       $('.cb1').hide();
+
+     }
+
+
+
 
 
 
@@ -348,6 +353,18 @@ $('#easy').click(function()
       // }
 
 })
+
+function validateEntry() {
+    var e = event || window.event;  // get event object
+    var key = e.keyCode || e.which; // get key cross-browser
+
+    if (key < 49 || key > 57) { //if it is not a number ascii code
+        //Prevent default action, which is inserting character
+        if (e.preventDefault) e.preventDefault(); //normal browsers
+            e.returnValue = false; //IE
+    }
+}
+
 
 </script>
 
